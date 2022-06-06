@@ -1,14 +1,14 @@
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
-pub struct AppData{
-    phantom_state: String
+pub struct AppData {
+    phantom_state: String,
 }
 
 impl Default for AppData {
     fn default() -> Self {
-        Self{
-            phantom_state: "nothing".to_string()
+        Self {
+            phantom_state: "nothing".to_string(),
         }
     }
 }
@@ -42,9 +42,7 @@ impl eframe::App for AppData {
             // The central panel the region left after adding TopPanel's and SidePanel's
 
             ui.heading("Test");
-
         });
-
     }
 
     /// Called by the frame work to save state before shutdown.
