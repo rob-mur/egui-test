@@ -18,7 +18,8 @@ impl Default for AppData {
 
 impl AppData {
     /// Called once before the first frame.
-    pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
+    pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
+        cc.egui_ctx.set_debug_on_hover(true);
         Default::default()
     }
 }
