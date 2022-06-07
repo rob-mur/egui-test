@@ -1,6 +1,5 @@
-use egui::{Color32, pos2, Rect, Sense};
+use crate::widgets::board::BoardWidget;
 use egui_extras::{Size, StripBuilder};
-use crate::widgets::board::board;
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -30,7 +29,21 @@ impl eframe::App for AppData {
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            board(ui);
+            StripBuilder::new(ui)
+                .sizes(Size::remainder(), 2)
+                .vertical(|mut strip| {
+                    strip.strip(|builder| {
+                        builder.sizes(Size::remainder(), 2).horizontal(|mut strip| {
+                            strip.cell(|ui| {
+                                let available_size = ui.available_size();
+                                let length = f32::min(available_size.x, available_size.y);
+                                ui.add_sized([length, length], BoardWidget);
+                            });
+                            strip.empty();
+                        });
+                    });
+                    strip.empty();
+                });
         });
     }
 }
