@@ -56,9 +56,13 @@ fn fill_strip(strip: &mut Strip<'_, '_>, idx: &mut i32) {
 
 fn fill_cell(strip: &mut Strip<'_, '_>, idx: &mut i32) {
     strip.cell(|ui| {
-        ui.painter()
-            .rect_filled(ui.available_rect_before_wrap(), 0.0, Color32::WHITE);
-        ui.label(format!("{}", *idx));
+        // Add a margin before button
+        egui::CentralPanel::default().show_inside(ui, |ui| {
+            ui.add_sized(
+                ui.available_size(),
+                egui::Button::new(format!("{}", *idx)).fill(Color32::WHITE),
+            );
+        });
         *idx += 1;
     });
 }
