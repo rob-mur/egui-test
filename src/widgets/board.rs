@@ -7,11 +7,9 @@ impl Widget for BoardWidget {
     fn ui(self, ui: &mut Ui) -> Response {
         egui::CentralPanel::default()
             .show_inside(ui, |ui| {
-                egui::CentralPanel::default().show_inside(ui, |ui| {
-                    ui.heading("Next player: X");
-                    ui.label("");
-                    board(ui);
-                });
+                ui.heading("Next player: X");
+                ui.label("");
+                board(ui);
             })
             .response
     }
