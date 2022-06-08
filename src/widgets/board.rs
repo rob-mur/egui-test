@@ -1,14 +1,13 @@
+use super::game::Player;
 use super::square::SquareWidget;
 use egui::style::Margin;
 use egui::{Color32, Direction, Frame, Layout, Response, Stroke, Ui, Vec2, Widget};
 use egui_extras::{Size, Strip, StripBuilder};
 use std::default::Default;
-use super::game::Player;
-
 
 pub struct BoardWidget<'a> {
     pub board: &'a mut [Option<Player>; 9],
-    pub next_player: &'a mut Player
+    pub next_player: &'a mut Player,
 }
 
 impl<'a> Widget for BoardWidget<'a> {
@@ -73,7 +72,7 @@ impl<'a> BoardWidget<'a> {
                         ui.available_size(),
                         SquareWidget {
                             clicked: self.board.get_mut(*idx).expect("id should always exist"),
-                            next_player: self.next_player
+                            next_player: self.next_player,
                         },
                     );
                 });
