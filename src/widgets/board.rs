@@ -17,6 +17,8 @@ impl<'a> Widget for BoardWidget<'a> {
                 if let Some(winner) = calculate_winner(self.board) {
                     ui.heading(format!("Winner: {}\n", winner));
                     ui.set_enabled(false);
+                } else if self.board.iter().all(|x| x.is_some()) {
+                    ui.heading("Draw!\n");
                 } else {
                     ui.heading(format!("Next player: {}\n", self.next_player));
                 }
