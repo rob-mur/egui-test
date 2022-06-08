@@ -1,7 +1,10 @@
 use egui::{Color32, Widget};
+use super::game::Player;
+
 
 pub struct SquareWidget<'a> {
-    pub clicked: &'a mut bool,
+    pub clicked: &'a mut Option<Player>,
+    pub next_player: &'a mut Player
 }
 
 /// Required as a lower bound for fonts to avoid painter crash
@@ -17,10 +20,14 @@ impl<'a> Widget for SquareWidget<'a> {
             .expect("button style should always exist");
         font_id.size = f32::max(FONT_MIN_SIZE, font_size);
 
-        let text = match self.clicked {
-            true => "X",
-            false => "",
+        let text = match &*self.clicked {
+            Some(x) => format!("{}",x),
+            None => String::new()
         };
+       
+        if self.clicked.is_some() {
+            ui.set_enabled(false);
+        }
 
         let response = ui.add_sized(
             ui.available_size(),
@@ -28,7 +35,11 @@ impl<'a> Widget for SquareWidget<'a> {
         );
 
         if response.clicked() {
-            *self.clicked = !*self.clicked;
+            *self.clicked = Some(*self.next_player); 
+            *self.next_player = match self.next_player {
+                Player::O => Player::X,
+                Player::X => Player::O,
+            };
         }
 
         response

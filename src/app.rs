@@ -1,8 +1,9 @@
-use crate::widgets::game::GameWidget;
+use crate::widgets::game::{GameWidget, Player};
 
 #[derive(Default)]
 pub struct AppData {
-    board: [bool; 9],
+    board: [Option<Player>; 9],
+    next_player: Player
 }
 
 impl AppData {
@@ -19,6 +20,7 @@ impl eframe::App for AppData {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.add(GameWidget {
                 board: &mut self.board,
+                next_player: &mut self.next_player
             });
         });
     }
