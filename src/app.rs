@@ -1,18 +1,8 @@
 use crate::widgets::game::GameWidget;
 
-/// We derive Deserialize/Serialize so we can persist app state on shutdown.
-#[derive(serde::Deserialize, serde::Serialize)]
-#[serde(default)] // if we add new fields, give them default values when deserializing old state
+#[derive(Default)]
 pub struct AppData {
-    phantom_state: String,
-}
-
-impl Default for AppData {
-    fn default() -> Self {
-        Self {
-            phantom_state: "nothing".to_string(),
-        }
-    }
+    clicks: [bool; 9],
 }
 
 impl AppData {
@@ -27,7 +17,9 @@ impl eframe::App for AppData {
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.add(GameWidget);
+            ui.add(GameWidget {
+                clicks: &mut self.clicks,
+            });
         });
     }
 }
