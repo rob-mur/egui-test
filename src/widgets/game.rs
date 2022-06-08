@@ -33,7 +33,7 @@ impl<'a> Widget for GameWidget<'a> {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Player {
     X,
     O,

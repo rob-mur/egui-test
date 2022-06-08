@@ -14,11 +14,35 @@ impl<'a> Widget for BoardWidget<'a> {
     fn ui(self, ui: &mut Ui) -> Response {
         egui::CentralPanel::default()
             .show_inside(ui, |ui| {
-                ui.heading(format!("Next player: {}\n", self.next_player));
+                if let Some(winner) = calculate_winner(self.board) {
+                    ui.heading(format!("Winner: {}\n", winner));
+                    ui.set_enabled(false);
+                } else {
+                    ui.heading(format!("Next player: {}\n", self.next_player));
+                }
                 self.board(ui);
             })
             .response
     }
+}
+
+fn calculate_winner(board: &[Option<Player>; 9]) -> Option<Player> {
+    const LINES: [[usize; 3]; 8] = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    for [a, b, c] in LINES {
+        if board[a].is_some() && board[a] == board[b] && board[a] == board[c] {
+            return board[a];
+        }
+    }
+    None
 }
 
 impl<'a> BoardWidget<'a> {
