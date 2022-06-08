@@ -1,10 +1,11 @@
+use super::square::SquareWidget;
 use egui::style::Margin;
 use egui::{Color32, Direction, Frame, Layout, Response, Stroke, Ui, Vec2, Widget};
 use egui_extras::{Size, Strip, StripBuilder};
 use std::default::Default;
 
 pub struct BoardWidget<'a> {
-    pub clicks: &'a mut [bool; 9],
+    pub board: &'a mut [bool; 9],
 }
 
 impl<'a> Widget for BoardWidget<'a> {
@@ -67,8 +68,8 @@ impl<'a> BoardWidget<'a> {
                 .show_inside(ui, |ui| {
                     ui.add_sized(
                         ui.available_size(),
-                        super::square::SquareWidget {
-                            clicked: &mut self.clicks[*idx],
+                        SquareWidget {
+                            clicked: self.board.get_mut(*idx).expect("id should always exist"),
                         },
                     );
                 });

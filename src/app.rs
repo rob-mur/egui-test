@@ -2,7 +2,7 @@ use crate::widgets::game::GameWidget;
 
 #[derive(Default)]
 pub struct AppData {
-    clicks: [bool; 9],
+    board: [bool; 9],
 }
 
 impl AppData {
@@ -18,7 +18,7 @@ impl eframe::App for AppData {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.add(GameWidget {
-                clicks: &mut self.clicks,
+                board: &mut self.board,
             });
         });
     }
