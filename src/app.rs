@@ -1,5 +1,4 @@
-use crate::widgets::board::BoardWidget;
-use egui_extras::{Size, StripBuilder};
+use crate::widgets::game::GameWidget;
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -18,8 +17,7 @@ impl Default for AppData {
 
 impl AppData {
     /// Called once before the first frame.
-    pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        cc.egui_ctx.set_debug_on_hover(true);
+    pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         Default::default()
     }
 }
@@ -29,21 +27,7 @@ impl eframe::App for AppData {
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            StripBuilder::new(ui)
-                .sizes(Size::remainder(), 2)
-                .vertical(|mut strip| {
-                    strip.strip(|builder| {
-                        builder.sizes(Size::remainder(), 2).horizontal(|mut strip| {
-                            strip.cell(|ui| {
-                                let available_size = ui.available_size();
-                                let length = f32::min(available_size.x, available_size.y);
-                                ui.add_sized([length, length], BoardWidget);
-                            });
-                            strip.empty();
-                        });
-                    });
-                    strip.empty();
-                });
+            ui.add(GameWidget);
         });
     }
 }
